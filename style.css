@@ -4,3 +4,8 @@
   stroke-width: 0.2;
   stroke-linejoin: round;
 }
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
