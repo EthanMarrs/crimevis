@@ -1,6 +1,11 @@
 var width = 1200,
     height = 600;
 
+var quantize = d3.scale.quantize()
+    .domain([0, .15])
+    .range(d3.range(9).map(function(i) { return "q" + i; }));
+
+
 var zoom = d3.behavior.zoom()
     .scaleExtent([1, 8])
     .on("zoom", zoomed);
