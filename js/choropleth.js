@@ -2,7 +2,7 @@ var width = 1200,
     height = 600;
 
 var quantize = d3.scale.quantize()
-    .domain([0, .15])
+    .domain([0, 5001])
     .range(d3.range(9).map(function(i) { return "q" + i; }));
 
 
@@ -17,14 +17,12 @@ var svg = d3.select("body").append("svg")
 
 var g = svg.append("g");
 
-svg
-    .append("rect")
+svg.append("rect")
     .attr("class", "overlay")
     .attr("width", width)
     .attr("height", height);
 
-svg
-    .call(zoom)
+svg.call(zoom)
     .call(zoom.event);
 
 /**
@@ -51,6 +49,16 @@ d3.json("../json/provinces.json", function(error, bounds) {
             .attr("class", function(d) {
                 return "province " + d.properties.ID;
             });
+
+    d3.json("../provinceCrime.json", function(error, data) {
+        if (error) return console.error(error);
+
+        $.each(data["Provinces"], function(i, x) {
+            console.log("." + i);
+            console.log(quantize(x["Murder"]["2004"]));
+            $(document).find("." + i).addClass(quantize(x["Murder"]["2004"]));
+        });
+    });
 });
 
 function zoomed() {
