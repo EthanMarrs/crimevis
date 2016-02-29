@@ -1,10 +1,7 @@
 var width = 1200,
     height = 600;
 
-var quantize = d3.scale.quantize()
-    .domain([0, 5001])
-    .range(d3.range(9).map(function(i) { return "q" + i; }));
-
+var provinceColors = ["rgb(198,219,239)","rgb(107,174,214)", "rgb(66,146,198)", "rgb(33,113,181)", "rgb(8,81,156)", "rgb(8,48,107)"];
 
 var zoom = d3.behavior.zoom()
     .scaleExtent([1, 8])
@@ -53,14 +50,46 @@ d3.json("../json/provinces.json", function(error, bounds) {
     d3.json("../provinceCrime.json", function(error, data) {
         if (error) return console.error(error);
 
+        var max = 0;
+        var min = 1000000;
+
+        var crime = "Murder";
+        var year = "2013";
+
         $.each(data["Provinces"], function(i, x) {
-            console.log("." + i);
-            console.log(quantize(x["Murder"]["2004"]));
-            $(document).find("." + i).addClass(quantize(x["Murder"]["2004"]));
+            if (max < x[crime][year]) { max = x[crime][year]; }
+            if (min > x[crime][year]) { min = x[crime][year]; }
+        });
+
+        var domain = calculateDomain(min, max);
+        console.log(min);
+        console.log(max);
+        console.log(domain);
+
+        var color = d3.scale.linear()
+            .domain(domain)
+            .range(provinceColors);
+
+        $.each(data["Provinces"], function(i, x) {
+            console.log(i + " " + x[crime][year]);
+            $(document).find("." + i).css("fill", color(x[crime][year]));
         });
     });
 });
 
 function zoomed() {
     g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+function calculateDomain(min, max) {
+    var add = Math.floor((max - min) / 6);
+    var domain = [min];
+
+    for (var i = 1; i <= 4; i++) {
+        domain.push(add * i + min);
+    }
+
+    domain.push(max);
+
+    return domain;
 }
