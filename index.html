@@ -2,9 +2,24 @@
 <meta charset="utf-8">
 <body>
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+<form action="#">
+  <p>
+    <input name="data_scope" type="radio" id="provincial_radio" value="provincial"/>
+    <label for="provincial_radio">Provincial</label>
+  </p>
+  <p>
+    <input name="data_scope" type="radio" id="station_radio" checked="checked" value="station"/>
+    <label for="station_radio">Station</label>
+  </p>
+</form>
+
 <script src="js/jquery-2.2.1.min.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/topojson.min.js"></script>
 <script src="js/d3-legend.min.js"></script>
 <script src="js/choropleth.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/extra.js"></script>
 </body>
