@@ -26,7 +26,7 @@ svg.call(zoom)
  * Load Province Data
  */
 
-d3.json("../json/provinces.json", function(error, bounds) {
+d3.json("../json/policeBounds.json", function(error, bounds) {
     if (error) return console.error(error);
 
     var projection = d3.geo.mercator()
@@ -41,22 +41,24 @@ d3.json("../json/provinces.json", function(error, bounds) {
         .selectAll("path")
             .data(topojson.feature(bounds, bounds.objects.collection).features)
         .enter().append("path")
-            .attr("class", "province")
+            .attr("class", "boundary")
             .attr("d", path)
             .attr("class", function(d) {
-                return "province " + d.properties.ID;
+                return "boundary " + d.properties.ID;
             });
 
-    d3.json("../provinceCrime.json", function(error, data) {
+    d3.json("../json/stationCrime.json", function(error, data) {
         if (error) return console.error(error);
 
         var max = 0;
         var min = 1000000;
 
-        var crime = "Murder";
+        var crime = "Common assault";
         var year = "2013";
 
-        $.each(data["Provinces"], function(i, x) {
+
+
+        $.each(data, function(i, x) {
             if (max < x[crime][year]) { max = x[crime][year]; }
             if (min > x[crime][year]) { min = x[crime][year]; }
         });
@@ -84,15 +86,22 @@ d3.json("../json/provinces.json", function(error, bounds) {
         svg.select(".legendLinear")
             .call(legendLinear);
 
-        $.each(data["Provinces"], function(i, x) {
-            console.log(i + " " + x[crime][year]);
-            $(document).find("." + i).css("fill", color(x[crime][year]));
+        $.each(data, function(i, x) {
+            //console.log(i + " " + x[crime][year]);
+            $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
         });
     });
 });
 
 function zoomed() {
     g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+function escape(str) {
+    return str
+        .replace(/\(/g, "\\(")
+        .replace(/\)/g, "\\)")
+        .replace(/'/g, "\\'");
 }
 
 function calculateDomain(min, max) {
