@@ -70,6 +70,20 @@ d3.json("../json/provinces.json", function(error, bounds) {
             .domain(domain)
             .range(provinceColors);
 
+        svg.append("g")
+            .attr("class", "legendLinear")
+            .attr("transform", "translate(20,20)");
+
+        var legendLinear = d3.legend.color()
+            .shapeWidth(30)
+            .orient('vertical')
+            .cells(domain)
+            .scale(color)
+            .labelFormat(d3.format(".0f"));
+
+        svg.select(".legendLinear")
+            .call(legendLinear);
+
         $.each(data["Provinces"], function(i, x) {
             console.log(i + " " + x[crime][year]);
             $(document).find("." + i).css("fill", color(x[crime][year]));
