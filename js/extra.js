@@ -6,14 +6,14 @@ $(document).ready(function() {
         if (this.value == 'provincial') {
             $(document).find(".stations").addClass("hidden");
 
-            setColors("../json/provinceCrime.json");
+            setColors("../json/provinceCrime.json", "provinces");
             $(document).find(".provinces").removeClass("hidden");
             console.log("Load provincial data")
         }
         else if (this.value == 'station') {
             $(document).find(".provinces").addClass("hidden");
 
-            setColors("../json/stationCrime.json");
+            setColors("../json/stationCrime.json", "stations");
             $(document).find(".stations").removeClass("hidden");
             console.log("Load station data")
         }

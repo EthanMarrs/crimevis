@@ -1,68 +1,69 @@
 var width = $("#main").css("width"),
-    height = $(window).height() - 150;
+    height = $(window).height() - 130;
 
-
+var provinceSvg;
+var stationSvg;
 
 var provinceColors = ["rgb(198,219,239)","rgb(107,174,214)", "rgb(66,146,198)", "rgb(33,113,181)", "rgb(8,81,156)", "rgb(8,48,107)"];
-
-
-
-//var svg = d3.select("body").append("svg")
-//    .attr("width", width)
-//    .attr("height", height)
-//    .append("g");
-//
-//var g = svg.append("g");
-//
-//svg.append("rect")
-//    .attr("class", "overlay")
-//    .attr("width", width)
-//    .attr("height", height);
-//
-//svg.call(zoom)
-//    .call(zoom.event);
 
 var provinces;
 var stations;
 
 function writeProvinces() {
-    var svg = d3.select("#main").append("svg")
+    provinceSvg = d3.select("#main").append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "provinces hidden")
         .append("g");
 
-    var g = svg.append("g");
+    var g = provinceSvg.append("g");
 
-    svg.append("rect")
+    provinceSvg.append("rect")
         .attr("class", "overlay")
         .attr("width", width)
         .attr("height", height);
 
-    //svg.call(zoom)
-    //    .call(zoom.event);
+    var zoom = d3.behavior.zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", function() {
+            console.log("zoomed");
+            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        });
 
-    write("../json/provinces.json", svg);
+    provinceSvg.call(zoom)
+        .call(zoom.event);
+
+    write("../json/provinces.json", provinceSvg);
 }
 
 function writeStations() {
-    var svg = d3.select("#main").append("svg")
+    stationSvg = d3.select("#main").append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "stations hidden")
         .append("g");
 
-    var g = svg.append("g");
+    var g = stationSvg.append("g");
 
-    svg.append("rect")
+    stationSvg.append("rect")
         .attr("class", "overlay")
         .attr("width", width)
         .attr("height", height);
 
+    var zoom = d3.behavior.zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", function() {
+            console.log("zoomed");
+            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        });
+
+    stationSvg.call(zoom)
+        .call(zoom.event);
+
     //svg.call(zoom)
     //    .call(zoom.event);
 
-    write("../json/policeBounds.json", svg);
+    write("../json/policeBounds.json", stationSvg);
 }
 
 //load the station data
@@ -86,14 +87,21 @@ function write(geoData, svg){
                 .attr("class", function(d) {
                     return "boundary " + d.properties.ID;
                 });
-
-
     });
 }
 
-function setColors(crimeData) {
+function setColors(crimeData, source) {
     d3.json(crimeData, function(error, data) {
         if (error) return console.error(error);
+
+        var svg;
+
+        if (source == "provinces") {
+            svg = provinceSvg;
+        }
+        else {
+            svg = stationSvg;
+        }
 
         var max = 0;
         var min = 1000000;
@@ -113,19 +121,19 @@ function setColors(crimeData) {
             .domain(domain)
             .range(provinceColors);
 
-        //svg.append("g")
-        //    .attr("class", "legendLinear")
-        //    .attr("transform", "translate(20,20)");
-        //
-        //var legendLinear = d3.legend.color()
-        //    .shapeWidth(30)
-        //    .orient('vertical')
-        //    .cells(domain)
-        //    .scale(color)
-        //    .labelFormat(d3.format(".0f"));
-        //
-        //svg.select(".legendLinear")
-        //    .call(legendLinear);
+        svg.append("g")
+            .attr("class", "legendLinear")
+            .attr("transform", "translate(20,20)");
+
+        var legendLinear = d3.legend.color()
+            .shapeWidth(30)
+            .orient('vertical')
+            .cells(domain)
+            .scale(color)
+            .labelFormat(d3.format(".0f"));
+
+        svg.select(".legendLinear")
+            .call(legendLinear);
 
         $.each(data, function(i, x) {
             $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
