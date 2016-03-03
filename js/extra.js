@@ -25,9 +25,20 @@ $("#crime-select").on("change", (function() {
         setColors("../json/provinceCrime.json", "provinces");
     }
     else {
+        console.log($());
         setColors("../json/stationCrime.json", "stations");
     }
 }));
+
+$("#provincial_radio").on("click", function() {
+    $(this).attr("checked", "checked");
+    $("#station_radio").attr("checked", false);
+});
+
+$("#station_radio").on("click", function() {
+    $(this).attr("checked", "checked");
+    $("#provincial_radio").attr("checked", false);
+});
 
 d3.json("../json/crimeCategories.json", function(error, data) {
     if (error) return console.error(error);
@@ -63,6 +74,16 @@ noUiSlider.create(slider, {
         values: 10,
         density: 10,
         stepped: true
+    }
+});
+
+slider.noUiSlider.on('update', function(){
+    if ($("#provincial_radio").attr("checked") == "checked") {
+        setColors("../json/provinceCrime.json", "provinces");
+    }
+    else {
+        console.log($());
+        setColors("../json/stationCrime.json", "stations");
     }
 });
 
