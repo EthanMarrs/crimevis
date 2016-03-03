@@ -1,3 +1,6 @@
+foo("../json/policeBounds.json", "../json/stationCrime.json", "stations");
+foo("../json/provinces.json", "../json/provinceCrime.json", "provinces");
+
 $(document).ready(function() {
     $('input[type=radio][name=data_scope]').change(function() {
         if (this.value == 'provincial') {
@@ -9,16 +12,16 @@ $(document).ready(function() {
     });
 });
 
-var slider = document.getElementById('test5');
-noUiSlider.create(slider, {
-start: [20, 80],
-connect: true,
-step: 1,
-range: {
- 'min': 0,
- 'max': 100
-},
-format: wNumb({
- decimals: 0
-})
-});
+// var slider = document.getElementById('test5');
+// noUiSlider.create(slider, {
+// start: [20, 80],
+// connect: true,
+// step: 1,
+// range: {
+//  'min': 0,
+//  'max': 100
+// },
+// format: wNumb({
+//  decimals: 0
+// })
+// });

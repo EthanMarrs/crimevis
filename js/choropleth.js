@@ -22,76 +22,83 @@ svg.append("rect")
 svg.call(zoom)
     .call(zoom.event);
 
-/**
- * Load Province Data
- */
+var provinces;
+var stations;
 
-d3.json("../json/policeBounds.json", function(error, bounds) {
-    if (error) return console.error(error);
-
-    var projection = d3.geo.mercator()
-        .center([18, -27 ])
-        .scale(2000);
-
-    var path = d3.geo.path()
-        .projection(projection);
-
-    svg.select("g")
-            .attr("class", "provinces")
-        .selectAll("path")
-            .data(topojson.feature(bounds, bounds.objects.collection).features)
-        .enter().append("path")
-            .attr("class", "boundary")
-            .attr("d", path)
-            .attr("class", function(d) {
-                return "boundary " + d.properties.ID;
-            });
-
-    d3.json("../json/stationCrime.json", function(error, data) {
+//load the station data
+function foo(geoData, crimeData, name){
+    d3.json(geoData, function(error, bounds) {
         if (error) return console.error(error);
 
-        var max = 0;
-        var min = 1000000;
+        var projection = d3.geo.mercator()
+            .center([18, -27 ])
+            .scale(2000);
 
-        var crime = "Common assault";
-        var year = "2013";
+        var path = d3.geo.path()
+            .projection(projection);
 
+        svg.select("g")
+                .attr("class", name)
+            .selectAll("path")
+                .data(topojson.feature(bounds, bounds.objects.collection).features)
+            .enter().append("path")
+                .attr("class", "boundary")
+                .attr("d", path)
+                .attr("class", function(d) {
+                    return "boundary " + d.properties.ID;
+                });
 
+        d3.json(crimeData, function(error, data) {
+            if (error) return console.error(error);
 
-        $.each(data, function(i, x) {
-            if (max < x[crime][year]) { max = x[crime][year]; }
-            if (min > x[crime][year]) { min = x[crime][year]; }
-        });
+            var max = 0;
+            var min = 1000000;
 
-        var domain = calculateDomain(min, max);
-        console.log(min);
-        console.log(max);
-        console.log(domain);
+            var crime = "Common assault";
+            var year = "2013";
 
-        var color = d3.scale.linear()
-            .domain(domain)
-            .range(provinceColors);
+            $.each(data, function(i, x) {
+                if (max < x[crime][year]) { max = x[crime][year]; }
+                if (min > x[crime][year]) { min = x[crime][year]; }
+            });
 
-        svg.append("g")
-            .attr("class", "legendLinear")
-            .attr("transform", "translate(20,20)");
+            var domain = calculateDomain(min, max);
+            console.log(min);
+            console.log(max);
+            console.log(domain);
 
-        var legendLinear = d3.legend.color()
-            .shapeWidth(30)
-            .orient('vertical')
-            .cells(domain)
-            .scale(color)
-            .labelFormat(d3.format(".0f"));
+            var color = d3.scale.linear()
+                .domain(domain)
+                .range(provinceColors);
 
-        svg.select(".legendLinear")
-            .call(legendLinear);
+            svg.append("g")
+                .attr("class", "legendLinear")
+                .attr("transform", "translate(20,20)");
 
-        $.each(data, function(i, x) {
-            //console.log(i + " " + x[crime][year]);
-            $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
+            var legendLinear = d3.legend.color()
+                .shapeWidth(30)
+                .orient('vertical')
+                .cells(domain)
+                .scale(color)
+                .labelFormat(d3.format(".0f"));
+
+            svg.select(".legendLinear")
+                .call(legendLinear);
+
+            $.each(data, function(i, x) {
+                //console.log(i + " " + x[crime][year]);
+                $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
+            });
+
+            if(name==="stations"){
+                d3.selectAll(".stations").attr("visibility", "hidden");
+            };
+            console.log("done")
         });
     });
-});
+}
+
+
 
 function zoomed() {
     g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
