@@ -22,19 +22,3 @@ format: wNumb({
  decimals: 0
 })
 });
-
-function loadData(scope) {
-    var jsonFileName = "";
-    var attribute = "";
-    if(scope==="provinces"){
-        jsonFileName = "../json/provinces.json";
-        var attribute = "province";
-    }
-    else if (scope==="stations") {
-        jsonFileName = "../json/policeBounds.json";
-        var attribute = "station";
-    }
-    else{
-        alert("error with loadData argument")
-    }
-}
