@@ -24,7 +24,7 @@ function writeProvinces() {
         .attr("height", height);
 
     var zoom = d3.behavior.zoom()
-        .scaleExtent([1, 8])
+        .scaleExtent([1, 20])
         .on("zoom", function() {
             console.log("zoomed");
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -51,17 +51,19 @@ function writeStations() {
         .attr("height", height);
 
     var zoom = d3.behavior.zoom()
-        .scaleExtent([1, 8])
+        .scaleExtent([1, 20])
         .on("zoom", function() {
-            console.log("zoomed");
+            if (d3.event.scale > 3.5) {
+                $(document).find(".boundary").addClass("close-boundary").removeClass("boundary");
+            }
+            else {
+                $(document).find(".close-boundary").addClass("boundary").removeClass("close-boundary");
+            }
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         });
 
     stationSvg.call(zoom)
         .call(zoom.event);
-
-    //svg.call(zoom)
-    //    .call(zoom.event);
 
     write("../json/policeBounds.json", stationSvg);
 }
@@ -106,8 +108,8 @@ function setColors(crimeData, source) {
         var max = 0;
         var min = 1000000;
 
-        var crime = "Murder";
-        var year = "2013";
+        var crime = $(document).find("#crime-select").val();
+        var year = Math.floor(slider.noUiSlider.get());
 
         $.each(data, function(i, x) {
             if (max < x[crime][year]) { max = x[crime][year]; }
@@ -136,7 +138,12 @@ function setColors(crimeData, source) {
             .call(legendLinear);
 
         $.each(data, function(i, x) {
-            $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
+            if ((x[crime][year].toString()).indexOf("?") >= 0) {
+                $(document).find("." + escape(i)).css("fill", "#ffffff");
+            }
+            else {
+                $(document).find("." + escape(i)).css("fill", color(x[crime][year]))
+            }
         });
     });
 }

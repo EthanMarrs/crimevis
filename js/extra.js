@@ -3,14 +3,14 @@ writeStations();
 
 $(document).ready(function() {
     $('input[type=radio][name=data_scope]').change(function() {
-        if (this.value == 'provincial') {
+        if (this.value == 'provinces') {
             $(document).find(".stations").addClass("hidden");
 
             setColors("../json/provinceCrime.json", "provinces");
             $(document).find(".provinces").removeClass("hidden");
             console.log("Load provincial data")
         }
-        else if (this.value == 'station') {
+        else if (this.value == 'stations') {
             $(document).find(".provinces").addClass("hidden");
 
             setColors("../json/stationCrime.json", "stations");
@@ -19,6 +19,15 @@ $(document).ready(function() {
         }
     });
 });
+
+$("#crime-select").on("change", (function() {
+    if ($("#provincial_radio").attr("checked") == "checked") {
+        setColors("../json/provinceCrime.json", "provinces");
+    }
+    else {
+        setColors("../json/stationCrime.json", "stations");
+    }
+}));
 
 d3.json("../json/crimeCategories.json", function(error, data) {
     if (error) return console.error(error);
@@ -32,6 +41,12 @@ d3.json("../json/crimeCategories.json", function(error, data) {
 
     $(document).ready(function() {
         $('select').material_select();
+    });
+
+    $(document).ready(function(){
+        $('.collapsible').collapsible({
+            accordion : true
+        });
     });
 });
 

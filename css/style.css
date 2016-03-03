@@ -12,6 +12,13 @@
   stroke-linejoin: round;
 }
 
+.close-boundary {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 0.1;
+    stroke-linejoin: round;
+}
+
 .hidden {
   display: none;
 }
@@ -19,6 +26,11 @@
 .overlay {
   fill: none;
   pointer-events: all;
+}
+
+.space {
+    width: 100%;
+    height: 40px;
 }
 
 .svg-container {
