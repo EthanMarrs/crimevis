@@ -3,30 +3,70 @@ var width = 1200,
 
 var provinceColors = ["rgb(198,219,239)","rgb(107,174,214)", "rgb(66,146,198)", "rgb(33,113,181)", "rgb(8,81,156)", "rgb(8,48,107)"];
 
-var zoom = d3.behavior.zoom()
-    .scaleExtent([1, 8])
-    .on("zoom", zoomed);
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g");
 
-var g = svg.append("g");
-
-svg.append("rect")
-    .attr("class", "overlay")
-    .attr("width", width)
-    .attr("height", height);
-
-svg.call(zoom)
-    .call(zoom.event);
+//var svg = d3.select("body").append("svg")
+//    .attr("width", width)
+//    .attr("height", height)
+//    .append("g");
+//
+//var g = svg.append("g");
+//
+//svg.append("rect")
+//    .attr("class", "overlay")
+//    .attr("width", width)
+//    .attr("height", height);
+//
+//svg.call(zoom)
+//    .call(zoom.event);
 
 var provinces;
 var stations;
 
+function writeProvinces() {
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "provinces")
+        .attr("visibility", "collapse")
+        .append("g");
+
+    var g = svg.append("g");
+
+    svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height);
+
+    //svg.call(zoom)
+    //    .call(zoom.event);
+
+    write("../json/provinces.json", "../json/provinceCrime.json", "provinces", svg);
+}
+
+function writeStations() {
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "stations")
+        .attr("visibility", "collapse")
+        .append("g");
+
+    var g = svg.append("g");
+
+    svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height);
+
+    //svg.call(zoom)
+    //    .call(zoom.event);
+
+    write("../json/policeBounds.json", "../json/stationCrime.json", "stations", svg);
+}
+
 //load the station data
-function foo(geoData, crimeData, name){
+function write(geoData, crimeData, name, svg){
     d3.json(geoData, function(error, bounds) {
         if (error) return console.error(error);
 
@@ -38,7 +78,6 @@ function foo(geoData, crimeData, name){
             .projection(projection);
 
         svg.select("g")
-                .attr("class", name)
             .selectAll("path")
                 .data(topojson.feature(bounds, bounds.objects.collection).features)
             .enter().append("path")
@@ -90,9 +129,6 @@ function foo(geoData, crimeData, name){
                 $(document).find("." + escape(i)).css("fill", color(x[crime][year]));
             });
 
-            if(name==="stations"){
-                d3.selectAll(".stations").attr("visibility", "hidden");
-            };
             console.log("done")
         });
     });
