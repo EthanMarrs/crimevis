@@ -5,10 +5,10 @@
   stroke-linejoin: round;
 }
 
-.province {
+.boundary {
   fill: none;
-  stroke: #FFFFFF;
-  stroke-width: 0.7;
+  stroke: #ffffff;
+  stroke-width: 0;
   stroke-linejoin: round;
 }
 
