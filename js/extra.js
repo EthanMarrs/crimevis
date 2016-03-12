@@ -20,7 +20,7 @@ $(document).ready(function() {
     });
 });
 
-$("#crime-select").on("change", (function() {
+$("#crime-select").on("change", function() {
     if ($("#provincial_radio").attr("checked") == "checked") {
         setColors("../json/provinceCrime.json", "provinces");
     }
@@ -28,7 +28,7 @@ $("#crime-select").on("change", (function() {
         console.log($());
         setColors("../json/stationCrime.json", "stations");
     }
-}));
+});
 
 $("#provincial_radio").on("click", function() {
     $(this).attr("checked", "checked");

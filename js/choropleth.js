@@ -88,7 +88,13 @@ function write(geoData, svg){
                 .attr("d", path)
                 .attr("class", function(d) {
                     return "boundary " + d.properties.ID;
-                });
+                })
+                .attr("data", function(d) {
+                        return d.properties.ID;
+                })
+            .on("mouseover", function() {
+                console.log("test");
+            });
     });
 }
 
@@ -112,8 +118,10 @@ function setColors(crimeData, source) {
         var year = Math.floor(slider.noUiSlider.get());
 
         $.each(data, function(i, x) {
-            if (max < x[crime][year]) { max = x[crime][year]; }
-            if (min > x[crime][year]) { min = x[crime][year]; }
+            for (var j = 2004; j < 2014; j++) {
+                if (max < x[crime][j]) { max = x[crime][j]; }
+                if (min > x[crime][j]) { min = x[crime][j]; }
+            }
         });
 
         var domain = calculateDomain(min, max);
@@ -143,7 +151,7 @@ function setColors(crimeData, source) {
                 $(document).find("." + escape(i)).css("fill", "#ffffff");
             }
             else {
-                $(document).find("." + escape(i)).css("fill", color(x[crime][year]))
+                $(document).find("." + escape(i)).css("fill", color(x[crime][year])).attr("value", x[crime][year]);
             }
         });
     });
