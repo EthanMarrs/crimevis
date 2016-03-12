@@ -18,7 +18,7 @@ function writeProvinces() {
 
     var g = provinceSvg.append("g");
 
-    provinceSvg.append("rect")
+    provinceSvg.append("g")
         .attr("class", "overlay")
         .attr("width", width)
         .attr("height", height);
@@ -45,7 +45,7 @@ function writeStations() {
 
     var g = stationSvg.append("g");
 
-    stationSvg.append("rect")
+    stationSvg.append("g")
         .attr("class", "overlay")
         .attr("width", width)
         .attr("height", height);
@@ -92,9 +92,15 @@ function write(geoData, svg){
                 .attr("data", function(d) {
                         return d.properties.ID;
                 })
-            .on("mouseover", function() {
-                console.log("test");
-            });
+                .on("mouseover", function() {
+                    d3.select(this).style("stroke", "#000000").style("stroke-width", 0.4);
+                    d3.select(this).moveToFront();
+                    $("#explore-info").append(d3.select(this).attr("data") + "</br>" + d3.select(this).attr("value"));
+                })
+                .on("mouseout", function() {
+                    d3.select(this).style("stroke", "#ffffff").style("stroke-width", 0);
+                    $("#explore-info").empty();
+                });
     });
 }
 
@@ -180,3 +186,9 @@ function calculateDomain(min, max) {
 
     return domain;
 }
+
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};

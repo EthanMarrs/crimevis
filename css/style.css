@@ -10,7 +10,11 @@
   stroke: #ffffff;
   stroke-width: 0;
   stroke-linejoin: round;
-    pointer-events: none;
+  pointer-events: all;
+}
+
+.pointer-events {
+    pointer-events: all;
 }
 
 .close-boundary {
