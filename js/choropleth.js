@@ -130,6 +130,7 @@ function setColors(crimeData, source) {
         var legendLinear = d3.legend.color()
             .shapeWidth(30)
             .orient('vertical')
+            .ascending(true)
             .cells(domain)
             .scale(color)
             .labelFormat(d3.format(".0f"));
