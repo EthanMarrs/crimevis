@@ -1,6 +1,8 @@
 var width = $("#main").css("width"),
     height = $(window).height() - 130;
 
+var depth = 0;
+
 var provinceSvg;
 var stationSvg;
 
@@ -26,8 +28,8 @@ function writeProvinces() {
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 20])
         .on("zoom", function() {
-            console.log("zoomed");
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            depth = d3.event.scale;
         });
 
     provinceSvg.call(zoom)
@@ -53,13 +55,14 @@ function writeStations() {
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 20])
         .on("zoom", function() {
-            if (d3.event.scale > 3.5) {
-                $(document).find(".boundary").addClass("close-boundary").removeClass("boundary");
-            }
-            else {
-                $(document).find(".close-boundary").addClass("boundary").removeClass("close-boundary");
-            }
+            //if (d3.event.scale > 3.5) {
+            //    $(document).find(".boundary").addClass("close-boundary").removeClass("boundary");
+            //}
+            //else {
+            //    $(document).find(".close-boundary").addClass("boundary").removeClass("close-boundary");
+            //}
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            depth = d3.event.scale;
         });
 
     stationSvg.call(zoom)
@@ -93,7 +96,7 @@ function write(geoData, svg){
                         return d.properties.ID;
                 })
                 .on("mouseover", function() {
-                    d3.select(this).style("stroke", "#000000").style("stroke-width", 0.4);
+                    d3.select(this).style("stroke", "#000000").style("stroke-width", 1.5 / depth + "px");
                     d3.select(this).moveToFront();
                     $("#explore-info").append(d3.select(this).attr("data") + "</br>" + d3.select(this).attr("value"));
                 })
