@@ -59,6 +59,10 @@ d3.json("../json/crimeCategories.json", function(error, data) {
             accordion : true
         });
     });
+
+    $(document).ready(function(){
+        $('.tooltipped').tooltip({delay: 50});
+    });
 });
 
 var slider = document.getElementById('year-slider');

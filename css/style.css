@@ -7,11 +7,16 @@
 
 .boundary {
   fill: none;
-  stroke: #ffffff;
-  stroke-width: 0;
+  stroke: #000000;
+  stroke-width: 0.1;
   stroke-linejoin: round;
+
   pointer-events: all;
 }
+
+/*#grab:hover {*/
+    /*cursor: hand;*/
+/*}*/
 
 .pointer-events {
     pointer-events: all;

@@ -6,7 +6,11 @@ var depth = 0;
 var provinceSvg;
 var stationSvg;
 
-var provinceColors = ["rgb(198,219,239)","rgb(107,174,214)", "rgb(66,146,198)", "rgb(33,113,181)", "rgb(8,81,156)", "rgb(8,48,107)"];
+//var provinceColors = ["rgb(198,219,239)","rgb(107,174,214)", "rgb(66,146,198)", "rgb(33,113,181)", "rgb(8,81,156)", "rgb(8,48,107)"];
+//var provinceColors = ["#FEEBE2","#FCC5C0", "#FA9FB5", "#F768A1", "#C51B8A", "#C51B8A"];
+var provinceColors = ["#FFFFCC","#A1DAB4", "#41B6C4", "#2C7FB8", "#253494", "#192466"];
+//var provinceColors = ["#FFFFD4","#FED98E", "#FE9929", "#D95F0E", "#993404", "#993404"];
+//var provinceColors = ["#CCFFFF","#FFFFCC", "FFEE99", "#FFCC66", "#FFC44D", "#FF8000 "];
 
 var provinces;
 var stations;
@@ -18,7 +22,7 @@ function writeProvinces() {
         .attr("class", "provinces hidden")
         .append("g");
 
-    var g = provinceSvg.append("g");
+    var g = provinceSvg.append("g").attr("id", "grab");
 
     provinceSvg.append("g")
         .attr("class", "overlay")
@@ -26,10 +30,9 @@ function writeProvinces() {
         .attr("height", height);
 
     var zoom = d3.behavior.zoom()
-        .scaleExtent([1, 20])
+        .scaleExtent([1, 30])
         .on("zoom", function() {
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-            depth = d3.event.scale;
         });
 
     provinceSvg.call(zoom)
@@ -45,7 +48,7 @@ function writeStations() {
         .attr("class", "stations hidden")
         .append("g");
 
-    var g = stationSvg.append("g");
+    var g = stationSvg.append("g").attr("id", "grab");
 
     stationSvg.append("g")
         .attr("class", "overlay")
@@ -53,7 +56,7 @@ function writeStations() {
         .attr("height", height);
 
     var zoom = d3.behavior.zoom()
-        .scaleExtent([1, 20])
+        .scaleExtent([1, 30])
         .on("zoom", function() {
             //if (d3.event.scale > 3.5) {
             //    $(document).find(".boundary").addClass("close-boundary").removeClass("boundary");
@@ -61,8 +64,9 @@ function writeStations() {
             //else {
             //    $(document).find(".close-boundary").addClass("boundary").removeClass("close-boundary");
             //}
+
+            //d3.selectAll(".boundary").style("stroke-width", 1.5 / d3.event.scale + "px");
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-            depth = d3.event.scale;
         });
 
     stationSvg.call(zoom)
@@ -95,13 +99,17 @@ function write(geoData, svg){
                 .attr("data", function(d) {
                         return d.properties.ID;
                 })
+                .attr("vector-effect", "non-scaling-stroke")
                 .on("mouseover", function() {
-                    d3.select(this).style("stroke", "#000000").style("stroke-width", 1.5 / depth + "px");
+                    var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
+                    d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
                     d3.select(this).moveToFront();
                     $("#explore-info").append(d3.select(this).attr("data") + "</br>" + d3.select(this).attr("value"));
                 })
                 .on("mouseout", function() {
-                    d3.select(this).style("stroke", "#ffffff").style("stroke-width", 0);
+                    var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
+                    d3.select(this).style("fill", d3.rgb(fill).brighter(0.7));
+                    //d3.select(this).style("stroke", "#ffffff").style("stroke-width", 0);
                     $("#explore-info").empty();
                 });
     });
