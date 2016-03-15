@@ -8,10 +8,35 @@
 .boundary {
   fill: none;
   stroke: #000000;
-  stroke-width: 0.1;
+  stroke-width: 0.15;
   stroke-linejoin: round;
 
   pointer-events: all;
+}
+
+.red {
+    padding: 4px;
+    border-radius: 4px 4px 4px 4px;
+    background-color: red;
+}
+
+.green {
+    padding: 4px;
+    border-radius: 4px 4px 4px 4px;
+    background-color: #00C853;
+}
+
+.large-text {
+    font-size: 20px;
+}
+
+#best {
+    padding: 20px;
+}
+
+#worst {
+    padding: 20px;
+    padding-top: 0px;
 }
 
 /*#grab:hover {*/

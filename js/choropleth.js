@@ -1,8 +1,6 @@
 var width = $("#main").css("width"),
     height = $(window).height() - 130;
 
-var depth = 0;
-
 var provinceSvg;
 var stationSvg;
 
@@ -174,8 +172,62 @@ function setColors(crimeData, source) {
     });
 }
 
-function zoomed() {
-    g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+function setBestWorst() {
+    $("#worst").empty();
+    $("#best").empty();
+
+    $(".boundary").css("fill", "#e0e0e0");
+    var path;
+    if ($("#provincial_radio").attr("checked") == "checked") {
+        path = "../json/provinceCrime.json";
+    }
+    else {
+        path = "../json/stationCrime.json";
+    }
+
+    d3.json(path, function(error, data) {
+        var crime = $(document).find("#crime-select").val();
+        var year = Math.floor(slider.noUiSlider.get());
+        var max = 0, min = 1000000;
+        var minName = "", maxName = "";
+
+        $.each(data, function(i, x) {
+            if (max < x[crime][year]) {
+                max = x[crime][year];
+                maxName = i;
+            }
+            if (min > x[crime][year]) {
+                min = x[crime][year];
+                minName = i;
+            }
+        });
+
+        $("." + minName).css("fill", "#00C853");
+        $("." + maxName).css("fill", "red");
+
+        $("#worst").append('<span class="red white-text large-text">Worst Region</span>' + "</br>" + maxName + "</br>" + max);
+        $("#best").append('<span class="green white-text large-text">Best Region</span>'+ "</br>" + minName + "</br>" + min);
+    });
+}
+
+function update() {
+    var selected = $(".accordion-option.active").attr("id");
+
+    if (selected == "explore") {
+        if ($("#provincial_radio").attr("checked") == "checked") {
+            setColors("../json/provinceCrime.json", "provinces");
+        }
+        else {
+            setColors("../json/stationCrime.json", "stations");
+        }
+    }
+    else if (selected == "change") {
+
+    }
+    else if (selected == "region") {
+
+    }
+    else if (selected == "best-worst") { setBestWorst(); }
 }
 
 function escape(str) {

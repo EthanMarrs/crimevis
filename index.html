@@ -39,23 +39,24 @@
             </div>
 
             <ul class="collapsible" data-collapsible="accordion">
-                <li>
+                <li id="explore" class="accordion-option">
                     <div class="collapsible-header active"><i class="material-icons">explore</i>Explore</div>
-                    <div class="collapsible-body">
-                        <p id="explore-info"></p>
-                    </div>
+                    <div class="collapsible-body"><p id="explore-info"></p></div>
                 </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">language</i>Compare Regions</div>
-                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                </li>
-                <li>
+                <li id="change" class="accordion-option">
                     <div class="collapsible-header"><i class="material-icons">show_chart</i>View Change</div>
                     <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
                 </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">iso</i>View Best & Worst</div>
+                <li id="region" class="accordion-option">
+                    <div class="collapsible-header"><i class="material-icons">language</i>Compare Regions</div>
                     <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                </li>
+                <li id="best-worst" class="accordion-option">
+                    <div class="collapsible-header"><i class="material-icons">iso</i>View Best & Worst</div>
+                    <div class="collapsible-body">
+                        <p id="best"></p>
+                        <p id="worst"></p>
+                    </div>
                 </li>
             </ul>
         </div>

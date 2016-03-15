@@ -6,28 +6,20 @@ $(document).ready(function() {
         if (this.value == 'provinces') {
             $(document).find(".stations").addClass("hidden");
 
-            setColors("../json/provinceCrime.json", "provinces");
+            update();
             $(document).find(".provinces").removeClass("hidden");
-            console.log("Load provincial data")
         }
         else if (this.value == 'stations') {
             $(document).find(".provinces").addClass("hidden");
 
-            setColors("../json/stationCrime.json", "stations");
+            update();
             $(document).find(".stations").removeClass("hidden");
-            console.log("Load station data")
         }
     });
 });
 
 $("#crime-select").on("change", function() {
-    if ($("#provincial_radio").attr("checked") == "checked") {
-        setColors("../json/provinceCrime.json", "provinces");
-    }
-    else {
-        console.log($());
-        setColors("../json/stationCrime.json", "stations");
-    }
+    update();
 });
 
 $("#provincial_radio").on("click", function() {
@@ -82,11 +74,21 @@ noUiSlider.create(slider, {
 });
 
 slider.noUiSlider.on('update', function(){
+    update();
+});
+
+$("#best-worst").on("click", function() {
+    $(".legendLinear").addClass("hidden");
+    setBestWorst();
+});
+
+$("#explore").on("click", function() {
+    $(".legendLinear").removeClass("hidden");
+
     if ($("#provincial_radio").attr("checked") == "checked") {
         setColors("../json/provinceCrime.json", "provinces");
     }
     else {
-        console.log($());
         setColors("../json/stationCrime.json", "stations");
     }
 });
