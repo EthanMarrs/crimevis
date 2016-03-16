@@ -1,6 +1,9 @@
 writeProvinces();
 writeStations();
 
+update();
+$(document).find(".provinces").removeClass("hidden");
+
 $(document).ready(function() {
     $('input[type=radio][name=data_scope]').change(function() {
         if (this.value == 'provinces') {
