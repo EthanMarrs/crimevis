@@ -9,7 +9,11 @@
 <div class="row" id="main-row">
     <div class="col s9">
         <div class="card-panel">
-            <div id="main"></div>
+            <div id="main">
+                <div class="tooltip hidden">
+
+                </div>
+            </div>
             <div class="row">
                 <div class="col s6 offset-s3">
                     <div id="year-slider"></div>
@@ -41,7 +45,12 @@
             <ul class="collapsible" data-collapsible="accordion">
                 <li id="explore" class="accordion-option active">
                     <div class="collapsible-header active"><i class="material-icons">explore</i>Explore</div>
-                    <div class="collapsible-body"><p id="explore-info"></p></div>
+                    <div class="collapsible-body">
+                        <p id="explore-info">
+                            Explore South African crime data by moving the cursor over provinces and police districts. Adjust
+                            the slider to change the year, and select crimes from the dropdown. 
+                        </p>
+                    </div>
                 </li>
                 <li id="change" class="accordion-option">
                     <div class="collapsible-header"><i class="material-icons">show_chart</i>View Change</div>

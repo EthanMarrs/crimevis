@@ -98,17 +98,28 @@ function write(geoData, svg){
                         return d.properties.ID;
                 })
                 .attr("vector-effect", "non-scaling-stroke")
-                .on("mouseover", function() {
-                    var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
+                .on("mouseenter", function() {
+                    var fill = d3.select(this).style("fill");
                     d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
                     d3.select(this).moveToFront();
-                    $("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
+                    //$("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
+                    //var mouse = d3.mouse(this);
+                    console.log("enter");
+                    $(".tooltip")
+                        .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
+                        .css("left", event.clientX - 25)
+                        .css("top", event.clientY + 25)
+                        .removeClass("hidden");
                 })
-                .on("mouseout", function() {
-                    var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
+                .on("mouseleave", function() {
+                    var fill = d3.select(this).style("fill");
                     d3.select(this).style("fill", d3.rgb(fill).brighter(0.7));
-                    //d3.select(this).style("stroke", "#ffffff").style("stroke-width", 0);
-                    $("#explore-info").empty();
+                    $(".tooltip").empty().addClass("hidden");
+                })
+                .on("mousemove", function() {
+                    $(".tooltip")
+                        .css("left", event.clientX - 25)
+                        .css("top", event.clientY + 25);
                 });
     });
 }
