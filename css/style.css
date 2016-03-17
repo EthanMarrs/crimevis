@@ -59,6 +59,10 @@
     /*box-shadow: 3px 3px 5px #000000;*/
 }
 
+.noUi-value {
+    font-size: 12px;
+}
+
 .hidden {
   display: none;
 }
