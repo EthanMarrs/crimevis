@@ -202,8 +202,16 @@ function setBestWorst() {
             }
         });
 
-        $("." + minName).css("fill", "#2C9D4F");
-        $("." + maxName).css("fill", "#DA2A26");
+        //$("." + minName).css("fill", "#2C9D4F");
+        //$("." + maxName).css("fill", "#DA2A26");
+        var t1 = textures.lines().thicker().stroke("#004000").background("#00C853");
+        var t2 = textures.circles().thicker().fill("#660000").background("#ff0000");
+
+        d3.select("#grab").call(t1);
+        d3.select("#grab").call(t2);
+
+        d3.select("." + minName).style("fill", t1.url);
+        d3.select("." + maxName).style("fill", t2.url);
 
         $("#worst").append('<span class="red white-text large-text">Worst Region</span>' + "</br>" + maxName.replace(/_/g, ' ') + "</br>" + max);
         $("#best").append('<span class="green white-text large-text">Best Region</span>'+ "</br>" + minName.replace(/_/g, ' ') + "</br>" + min);
@@ -264,6 +272,43 @@ function setChange() {
             $(document).find("." + escape(i)).css("fill", color(x));
         });
     });
+}
+
+//stops textures from being over-written
+function removeMouseEnterDarkenFeature(){
+    d3.selectAll("path")
+        .on("mouseenter", function() {
+            $(".tooltip")
+                .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
+                .css("left", event.clientX - 25)
+                .css("top", event.clientY + 25)
+                .removeClass("hidden");
+        })
+        .on("mouseleave", function() {
+            $(".tooltip").empty().addClass("hidden");
+        })
+}
+
+function addMouseEnterDarkenFeature(){
+    d3.selectAll("path")
+        .on("mouseenter", function() {
+            var fill = d3.select(this).style("fill");
+            d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
+            d3.select(this).moveToFront();
+            //$("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
+            //var mouse = d3.mouse(this);
+            console.log("enter");
+            $(".tooltip")
+                .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
+                .css("left", event.clientX - 25)
+                .css("top", event.clientY + 25)
+                .removeClass("hidden");
+        })
+        .on("mouseleave", function() {
+            var fill = d3.select(this).style("fill");
+            d3.select(this).style("fill", d3.rgb(fill).brighter(0.7));
+            $(".tooltip").empty().addClass("hidden");
+        })
 }
 
 function update() {

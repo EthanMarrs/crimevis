@@ -72,6 +72,7 @@ $("#best-worst").on("click", function() {
     standardSlider();
 
     $(".legendLinear").addClass("hidden");
+    removeMouseEnterDarkenFeature();
     setBestWorst();
 });
 
@@ -87,6 +88,7 @@ $("#explore").on("click", function() {
     else {
         setColors("../json/stationCrime.json", "stations");
     }
+    addMouseEnterDarkenFeature();
 });
 
 $("#change").on("click", function () {
