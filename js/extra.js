@@ -82,6 +82,7 @@ slider.noUiSlider.on('update', function(){
 
 $("#best-worst").on("click", function() {
     $(".legendLinear").addClass("hidden");
+    removeMouseEnterDarkenFeature();
     setBestWorst();
 });
 
@@ -94,5 +95,6 @@ $("#explore").on("click", function() {
     else {
         setColors("../json/stationCrime.json", "stations");
     }
+    addMouseEnterDarkenFeature();
 });
 
