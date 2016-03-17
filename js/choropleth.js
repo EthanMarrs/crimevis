@@ -102,7 +102,7 @@ function write(geoData, svg){
                     var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
                     d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
                     d3.select(this).moveToFront();
-                    $("#explore-info").append(d3.select(this).attr("data") + "</br>" + d3.select(this).attr("value"));
+                    $("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
                 })
                 .on("mouseout", function() {
                     var fill = d3.select(this).style("fill");    //.style("stroke-width", 1.5 / depth + "px");
@@ -205,8 +205,8 @@ function setBestWorst() {
         $("." + minName).css("fill", "#00C853");
         $("." + maxName).css("fill", "red");
 
-        $("#worst").append('<span class="red white-text large-text">Worst Region</span>' + "</br>" + maxName + "</br>" + max);
-        $("#best").append('<span class="green white-text large-text">Best Region</span>'+ "</br>" + minName + "</br>" + min);
+        $("#worst").append('<span class="red white-text large-text">Worst Region</span>' + "</br>" + maxName.replace(/_/g, ' ') + "</br>" + max);
+        $("#best").append('<span class="green white-text large-text">Best Region</span>'+ "</br>" + minName.replace(/_/g, ' ') + "</br>" + min);
     });
 }
 
