@@ -15,13 +15,13 @@
 .red {
     padding: 4px;
     border-radius: 4px 4px 4px 4px;
-    background-color: red;
+    background-color: #DA2A26;
 }
 
 .green {
     padding: 4px;
     border-radius: 4px 4px 4px 4px;
-    background-color: #00C853;
+    background-color: #2C9D4F;
 }
 
 .large-text {

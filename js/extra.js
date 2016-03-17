@@ -61,31 +61,24 @@ d3.json("../json/crimeCategories.json", function(error, data) {
 });
 
 var slider = document.getElementById('year-slider');
-noUiSlider.create(slider, {
-    range: {
-        'min': 2004,
-        'max': 2013
-    },
-    step: 1,
-    start: [2004],
-    pips: {
-        mode: 'count',
-        values: 10,
-        density: 10,
-        stepped: true
-    }
-});
+standardSlider();
 
 slider.noUiSlider.on('update', function(){
     update();
 });
 
 $("#best-worst").on("click", function() {
+    slider.noUiSlider.destroy();
+    standardSlider();
+
     $(".legendLinear").addClass("hidden");
     setBestWorst();
 });
 
 $("#explore").on("click", function() {
+    slider.noUiSlider.destroy();
+    standardSlider();
+
     $(".legendLinear").removeClass("hidden");
 
     if ($("#provincial_radio").attr("checked") == "checked") {
@@ -95,4 +88,48 @@ $("#explore").on("click", function() {
         setColors("../json/stationCrime.json", "stations");
     }
 });
+
+$("#change").on("click", function () {
+    slider.noUiSlider.destroy();
+
+    noUiSlider.create(slider, {
+        range: {
+            'min': 2004,
+            'max': 2013
+        },
+        step: 1,
+        start: [2004, 2013],
+        connect: true,
+        pips: {
+            mode: 'count',
+            values: 10,
+            density: 10,
+            stepped: true
+        }
+    });
+
+    slider.noUiSlider.on('update', function(){
+        update();
+    });
+
+    setChange();
+    $(".legendLinear").removeClass("hidden");
+});
+
+function standardSlider() {
+    noUiSlider.create(slider, {
+        range: {
+            'min': 2004,
+            'max': 2013
+        },
+        step: 1,
+        start: [2004],
+        pips: {
+            mode: 'count',
+            values: 10,
+            density: 10,
+            stepped: true
+        }
+    });
+}
 

@@ -9,6 +9,7 @@ var stationSvg;
 var provinceColors = ["#FFFFCC","#A1DAB4", "#41B6C4", "#2C7FB8", "#253494", "#192466"];
 //var provinceColors = ["#FFFFD4","#FED98E", "#FE9929", "#D95F0E", "#993404", "#993404"];
 //var provinceColors = ["#CCFFFF","#FFFFCC", "FFEE99", "#FFCC66", "#FFC44D", "#FF8000 "];
+var changeColors = ["#DE2D26", "#FC9272", "#FEE0D2", "#ffffff", "#E5F5E0", "#A1D99B", "#31A354"];
 
 var provinces;
 var stations;
@@ -56,14 +57,6 @@ function writeStations() {
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 30])
         .on("zoom", function() {
-            //if (d3.event.scale > 3.5) {
-            //    $(document).find(".boundary").addClass("close-boundary").removeClass("boundary");
-            //}
-            //else {
-            //    $(document).find(".close-boundary").addClass("boundary").removeClass("close-boundary");
-            //}
-
-            //d3.selectAll(".boundary").style("stroke-width", 1.5 / d3.event.scale + "px");
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         });
 
@@ -102,9 +95,6 @@ function write(geoData, svg){
                     var fill = d3.select(this).style("fill");
                     d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
                     d3.select(this).moveToFront();
-                    //$("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
-                    //var mouse = d3.mouse(this);
-                    console.log("enter");
                     $(".tooltip")
                         .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
                         .css("left", event.clientX - 25)
@@ -151,7 +141,6 @@ function setColors(crimeData, source) {
         });
 
         var domain = calculateDomain(min, max);
-        console.log(domain);
 
         var color = d3.scale.linear()
             .domain(domain)
@@ -213,11 +202,67 @@ function setBestWorst() {
             }
         });
 
-        $("." + minName).css("fill", "#00C853");
-        $("." + maxName).css("fill", "red");
+        $("." + minName).css("fill", "#2C9D4F");
+        $("." + maxName).css("fill", "#DA2A26");
 
         $("#worst").append('<span class="red white-text large-text">Worst Region</span>' + "</br>" + maxName.replace(/_/g, ' ') + "</br>" + max);
         $("#best").append('<span class="green white-text large-text">Best Region</span>'+ "</br>" + minName.replace(/_/g, ' ') + "</br>" + min);
+    });
+}
+
+function setChange() {
+    var path;
+    var max = 0, min = 1000000;
+    var years = slider.noUiSlider.get();
+    var start = Math.floor(years[0]);
+    var finish = Math.floor(years[1]);
+    var crime = $(document).find("#crime-select").val();
+    var svg;
+    var results = {};
+
+    if ($("#provincial_radio").attr("checked") == "checked") {
+        svg = provinceSvg;
+        path = "../json/provinceCrime.json";
+    }
+    else {
+        svg = stationSvg;
+        path = "../json/stationCrime.json";
+    }
+
+    d3.json(path, function(error, data) {
+        $.each(data, function(i, x) {
+            results[i] = x[crime][start] - x[crime][finish];
+        });
+
+        $.each(results, function(i, x) {
+            if (max < x) { max = x; }
+            if (min > x) { min = x; }
+        });
+
+        var domain = calculateChangeDomain(min, max);
+
+        var color = d3.scale.linear()
+            .domain(domain)
+            .range(changeColors);
+
+        svg.append("g")
+            .attr("class", "legendLinear")
+            .attr("transform", "translate(20,20)");
+
+        var legendLinear = d3.legend.color()
+            .shapeWidth(30)
+            .orient('vertical')
+            .ascending(true)
+            .cells(domain)
+            .scale(color)
+            .labelFormat(d3.format(".0f"));
+
+        svg.select(".legendLinear")
+            .call(legendLinear);
+
+        $.each(results, function(i, x) {
+            $(document).find("." + escape(i)).css("fill", color(x));
+        });
     });
 }
 
@@ -233,7 +278,7 @@ function update() {
         }
     }
     else if (selected == "change") {
-
+        setChange();
     }
     else if (selected == "region") {
 
@@ -259,6 +304,34 @@ function calculateDomain(min, max) {
     domain.push(max);
 
     return domain;
+}
+
+function calculateChangeDomain(min, max) {
+    var add = Math.floor(Math.abs(min / 3));
+    var domain = [min];
+
+    for (var i = 1; i <= 2; i++) { domain.push(add * i + min); }
+
+    domain.push(0);
+    add = Math.floor(max / 3);
+
+    for (var j = 1; j <= 2; j++) { domain.push(add * j); }
+    domain.push(max);
+
+    return domain;
+
+    //function calculateChangeDomain(min, max) {
+    //    var num = Math.max(min, max);
+    //    var add = Math.floor(num / 3);
+    //    var domain = [];
+    //
+    //    for (var i = 0; i <= 2; i++) { domain.push(add * i - num); }
+    //
+    //    for (var j = 0; j <= 3; j++) { domain.push(add * j); }
+    //
+    //    console.log(domain);
+    //    return domain;
+    //}
 }
 
 d3.selection.prototype.moveToFront = function() {
