@@ -9,7 +9,7 @@ var stationSvg;
 var provinceColors = ["#FFFFCC","#A1DAB4", "#41B6C4", "#2C7FB8", "#253494", "#192466"];
 //var provinceColors = ["#FFFFD4","#FED98E", "#FE9929", "#D95F0E", "#993404", "#993404"];
 //var provinceColors = ["#CCFFFF","#FFFFCC", "FFEE99", "#FFCC66", "#FFC44D", "#FF8000 "];
-var changeColors = ["#31A354", "#A1D99B", "#E5F5E0",   "#ffffff", "#DE2D26", "#FC9272", "#FEE0D2"];
+var changeColors = ["#31A354", "#A1D99B", "#E5F5E0",   "#ffffff", "#FEE0D2", "#FC9272", "#DE2D26"];
 
 var provinces;
 var stations;
@@ -92,11 +92,20 @@ function write(geoData, svg){
                 })
                 .attr("vector-effect", "non-scaling-stroke")
                 .on("mouseenter", function() {
+                    var attri;
+
+                    if ($(".accordion-option.active").attr("id") == "change") {
+                       attri =  "change";
+                    }
+                    else {
+                        attri = "value"
+                    }
+
                     var fill = d3.select(this).style("fill");
                     d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
                     d3.select(this).moveToFront();
                     $(".tooltip")
-                        .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
+                        .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr(attri))
                         .css("left", event.clientX - 25)
                         .css("top", event.clientY + 25)
                         .removeClass("hidden");
@@ -269,7 +278,7 @@ function setChange() {
             .call(legendLinear);
 
         $.each(results, function(i, x) {
-            $(document).find("." + escape(i)).css("fill", color(x));
+            $(document).find("." + escape(i)).css("fill", color(x)).attr("change", x);
         });
     });
 }
