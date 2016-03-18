@@ -73,7 +73,6 @@ $("#best-worst").on("click", function() {
 
     $(".legendLinear").addClass("hidden");
     removeMouseEnterDarkenFeature();
-    setBestWorst();
 });
 
 $("#explore").on("click", function() {
@@ -132,6 +131,10 @@ function standardSlider() {
             density: 10,
             stepped: true
         }
+    });
+
+    slider.noUiSlider.on('update', function(){
+        update();
     });
 }
 
