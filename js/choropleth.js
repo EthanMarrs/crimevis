@@ -9,7 +9,7 @@ var stationSvg;
 var provinceColors = ["#FFFFCC","#A1DAB4", "#41B6C4", "#2C7FB8", "#253494", "#192466"];
 //var provinceColors = ["#FFFFD4","#FED98E", "#FE9929", "#D95F0E", "#993404", "#993404"];
 //var provinceColors = ["#CCFFFF","#FFFFCC", "FFEE99", "#FFCC66", "#FFC44D", "#FF8000 "];
-var changeColors = ["#DE2D26", "#FC9272", "#FEE0D2", "#ffffff", "#E5F5E0", "#A1D99B", "#31A354"];
+var changeColors = ["#31A354", "#A1D99B", "#E5F5E0",   "#ffffff", "#DE2D26", "#FC9272", "#FEE0D2"];
 
 var provinces;
 var stations;
@@ -239,7 +239,7 @@ function setChange() {
 
     d3.json(path, function(error, data) {
         $.each(data, function(i, x) {
-            results[i] = x[crime][start] - x[crime][finish];
+            results[i] =  x[crime][finish] - x[crime][start];
         });
 
         $.each(results, function(i, x) {
