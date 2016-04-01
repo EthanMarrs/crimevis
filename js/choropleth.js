@@ -37,7 +37,7 @@ function writeProvinces() {
     provinceSvg.call(zoom)
         .call(zoom.event);
 
-    write("/json/provinces.json", provinceSvg);
+    write("json/provinces.json", provinceSvg);
 }
 
 function writeStations() {
@@ -63,7 +63,7 @@ function writeStations() {
     stationSvg.call(zoom)
         .call(zoom.event);
 
-    write("/json/policeBounds.json", stationSvg);
+    write("json/policeBounds.json", stationSvg);
 }
 
 //load the station data
@@ -188,10 +188,10 @@ function setBestWorst() {
     $(".boundary").css("fill", "#e0e0e0");
     var path;
     if ($("#provincial_radio").attr("checked") == "checked") {
-        path = "/json/provinceCrime.json";
+        path = "json/provinceCrime.json";
     }
     else {
-        path = "/json/stationCrime.json";
+        path = "json/stationCrime.json";
     }
 
     d3.json(path, function(error, data) {
@@ -239,11 +239,11 @@ function setChange() {
 
     if ($("#provincial_radio").attr("checked") == "checked") {
         svg = provinceSvg;
-        path = "/json/provinceCrime.json";
+        path = "json/provinceCrime.json";
     }
     else {
         svg = stationSvg;
-        path = "/json/stationCrime.json";
+        path = "json/stationCrime.json";
     }
 
     d3.json(path, function(error, data) {
@@ -325,10 +325,10 @@ function update() {
 
     if (selected == "explore") {
         if ($("#provincial_radio").attr("checked") == "checked") {
-            setColors("/json/provinceCrime.json", "provinces");
+            setColors("json/provinceCrime.json", "provinces");
         }
         else {
-            setColors("/json/stationCrime.json", "stations");
+            setColors("json/stationCrime.json", "stations");
         }
     }
     else if (selected == "change") {
