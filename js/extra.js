@@ -35,7 +35,7 @@ $("#station_radio").on("click", function() {
     $("#provincial_radio").attr("checked", false);
 });
 
-d3.json("../json/crimeCategories.json", function(error, data) {
+d3.json("json/crimeCategories.json", function(error, data) {
     if (error) return console.error(error);
 
     for (var i in data) {
@@ -82,10 +82,10 @@ $("#explore").on("click", function() {
     $(".legendLinear").removeClass("hidden");
 
     if ($("#provincial_radio").attr("checked") == "checked") {
-        setColors("../json/provinceCrime.json", "provinces");
+        setColors("json/provinceCrime.json", "provinces");
     }
     else {
-        setColors("../json/stationCrime.json", "stations");
+        setColors("json/stationCrime.json", "stations");
     }
     addMouseEnterDarkenFeature();
 });
