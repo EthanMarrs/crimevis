@@ -98,7 +98,7 @@ function write(geoData, svg){
                        attri =  "change";
                     }
                     else {
-                        attri = "value"
+                        attri = "value";
                     }
 
                     var fill = d3.select(this).style("fill");
@@ -301,14 +301,20 @@ function removeMouseEnterDarkenFeature(){
 function addMouseEnterDarkenFeature(){
     d3.selectAll("path")
         .on("mouseenter", function() {
+            var attri;
+            console.log($(".accordion-option.active").attr("id"));
+            if ($(".accordion-option.active").attr("id") == "change") {
+                attri =  "change";
+            }
+            else {
+                attri = "value";
+            }
+
             var fill = d3.select(this).style("fill");
             d3.select(this).style("fill", d3.rgb(fill).darker(0.7));
             d3.select(this).moveToFront();
-            //$("#explore-info").append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"));
-            //var mouse = d3.mouse(this);
-            console.log("enter");
             $(".tooltip")
-                .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr("value"))
+                .append(d3.select(this).attr("data").replace(/_/g, ' ') + "</br>" + d3.select(this).attr(attri))
                 .css("left", event.clientX - 25)
                 .css("top", event.clientY + 25)
                 .removeClass("hidden");
@@ -318,6 +324,11 @@ function addMouseEnterDarkenFeature(){
             d3.select(this).style("fill", d3.rgb(fill).brighter(0.7));
             $(".tooltip").empty().addClass("hidden");
         })
+        .on("mousemove", function() {
+            $(".tooltip")
+                .css("left", event.clientX - 25)
+                .css("top", event.clientY + 25);
+        });
 }
 
 function update() {
